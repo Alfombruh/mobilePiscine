@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class MyCalculatorButtons extends StatelessWidget {
@@ -5,9 +7,9 @@ class MyCalculatorButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        Container(decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color))),child: CalculatorRow(x: "+", y: "-", z: "x", k: "/")),
+        CalculatorRow(x: "+", y: "-", z: "x", k: "/"),
         CalculatorRow(x: "7", y: "8", z: "9", k: "C"),
         CalculatorRow(x: "4", y: "5", z: "6", k: "AC"),
         CalculatorRow(x: "1", y: "2", z: "3", k: "="),
@@ -32,7 +34,10 @@ class CalculatorRow extends StatelessWidget {
   final String k;
 
   void compute(String value) {
-    print(value);
+    if (value == "FUN") {
+      exit(0);
+    }
+    print("pressed button: " + value);
     return;
   }
 
@@ -40,10 +45,10 @@ class CalculatorRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: CalcButton(onPressed: compute, value: x)),
-        Expanded(child: CalcButton(onPressed: compute, value: y)),
-        Expanded(child: CalcButton(onPressed: compute, value: z)),
-        Expanded(child: CalcButton(onPressed: compute, value: k)),
+        CalcButton(onPressed: compute, value: x),
+        CalcButton(onPressed: compute, value: y),
+        CalcButton(onPressed: compute, value: z),
+        CalcButton(onPressed: compute, value: k),
       ],
     );
   }
@@ -57,15 +62,21 @@ class CalcButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        style: const ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.grey),
-            shape: MaterialStatePropertyAll(LinearBorder())),
-        onPressed: () => onPressed(value),
-        child: Text(
-          value,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w200),
-        ));
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 2),
+        child: TextButton(
+            style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Colors.black38),
+                // backgroundColor: MaterialStatePropertyAll(Colors.black38),
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))))),
+            onPressed: () => onPressed(value),
+            child: Text(
+              value,
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w200),
+            )),
+      ),
+    );
   }
 }
