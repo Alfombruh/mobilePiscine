@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 
 class MyCalculatorButtons extends StatelessWidget {
@@ -37,7 +38,7 @@ class CalculatorRow extends StatelessWidget {
     if (value == "FUN") {
       exit(0);
     }
-    print("pressed button: " + value);
+    developer.log("pressed button: $value");
     return;
   }
 
@@ -69,12 +70,15 @@ class CalcButton extends StatelessWidget {
             style: const ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(Colors.black38),
                 // backgroundColor: MaterialStatePropertyAll(Colors.black38),
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))))),
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5))))),
             onPressed: () => onPressed(value),
             child: Text(
               value,
               style: const TextStyle(
-                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w200),
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w200),
             )),
       ),
     );

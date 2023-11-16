@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:ex02/srcs/components/my_appbar.dart';
 import 'package:ex02/srcs/components/my_calculator_buttons.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +12,21 @@ class MyHomePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey,
       appBar: MyAppBar(name: name),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(child: OperationText("0"),),
-            OperationText("0"),
-            MyCalculatorButtons(),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ListView(
+              children: const [
+                OperationText("0"),
+                OperationText("0"),
+              ],
+              
+            ),
+          ),
+          const MyCalculatorButtons(),
+        ],
       ),
     ));
   }
