@@ -1,12 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
-class CalcButton extends StatelessWidget {
-  const CalcButton(text, color, this.function, {super.key});
+// class Stack<E> {
+//   final _list = <E>[];
 
-  final String text = "";
-  final Color color = Colors.black;
+//   void push(E value) => _list.add(value);
+//   E pop() => {return (_list.first)};
+// }
+
+class CalcButton extends StatelessWidget {
+  const CalcButton(this.text, this.color, this.function, {super.key});
+
+  final String text;
+  final Color color;
   final void Function()? function;
 
   @override

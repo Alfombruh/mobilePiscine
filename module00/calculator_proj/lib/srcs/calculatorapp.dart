@@ -52,9 +52,9 @@ class _CalculatorAppState extends State<CalculatorApp> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CalcButton('AC', Colors.white24, () => buttonPressed("AC")),
-                  CalcButton('', Colors.white24, () => buttonPressed("")),
-                  CalcButton('', Colors.white24, () => buttonPressed("")),
-                  CalcButton('', Colors.white24, () => buttonPressed("")),
+                  CalcButton('C', Colors.white24, () => buttonPressed("C")),
+                  CalcButton('x', Colors.white24, () => buttonPressed("x")),
+                  CalcButton('/', Colors.white24, () => buttonPressed("/")),
                 ],
               ),
             ],
