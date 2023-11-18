@@ -16,7 +16,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
   double resolutFontSize = 48.0;
 
   buttonPressed(String buttonText) {
-    return ;
+    return;
   }
 
   @override
@@ -33,28 +33,76 @@ class _CalculatorAppState extends State<CalculatorApp> {
             children: [
               Align(
                 alignment: Alignment.bottomRight,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      OutputText(result: result),
-                      InputText(equation: equation),
-                      IconButton(
-                        icon: const Icon(Icons.backspace_outlined,
-                            color: Colors.orange, size: 30),
-                        onPressed: () {
-                          buttonPressed("SEXO");
-                        },
-                      ),
-                      const SizedBox(width: 20,),
-                    ]),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        OutputText(result: result),
+                        InputText(equation: equation),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                      ]),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CalcButton('AC', Colors.white24, () => buttonPressed("AC")),
-                  CalcButton('C', Colors.white24, () => buttonPressed("C")),
-                  CalcButton('x', Colors.white24, () => buttonPressed("x")),
+                  CalcButton('C', Colors.white24, () => buttonPressed("%")),
                   CalcButton('/', Colors.white24, () => buttonPressed("/")),
+                  CalcButton('x', Colors.white24, () => buttonPressed("x")),
+                ],
+              ),
+              const SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CalcButton('7', Colors.white24, () => buttonPressed("AC")),
+                  CalcButton('8', Colors.white24, () => buttonPressed("%")),
+                  CalcButton('9', Colors.white24, () => buttonPressed("/")),
+                  CalcButton('-', Colors.white24, () => buttonPressed("x")),
+                ],
+              ),
+              const SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CalcButton('4', Colors.white24, () => buttonPressed("AC")),
+                  CalcButton('5', Colors.white24, () => buttonPressed("%")),
+                  CalcButton('6', Colors.white24, () => buttonPressed("/")),
+                  CalcButton('+', Colors.white24, () => buttonPressed("x")),
+                ],
+              ),
+              const SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                    Row(
+                      children: [
+                      CalcButton('1', Colors.white24, () => buttonPressed("AC")),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04,),
+                      CalcButton('2', Colors.white24, () => buttonPressed("%")),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04,),
+                      CalcButton('3', Colors.white24, () => buttonPressed("/")),
+                      ],
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      children: [
+                      CalcButton('0', Colors.white24, () => buttonPressed("AC")),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04,),
+                      CalcButton('.00', Colors.white24, () => buttonPressed("%")),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04,),
+                      CalcButton('C', Colors.white24, () => buttonPressed("/")),
+                      ],
+                    )
+                    ],
+                  ),
+                  CalcButton("=", Colors.white24, () => buttonPressed("="))
                 ],
               ),
             ],
@@ -71,6 +119,10 @@ class InputText extends StatelessWidget {
 
   final String equation;
 
+  buttonPressed(String buttonText) {
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -85,6 +137,13 @@ class InputText extends StatelessWidget {
               fontSize: 40,
             ),
           ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.backspace_outlined,
+              color: Colors.orange, size: 30),
+          onPressed: () {
+            buttonPressed("SEXO");
+          },
         ),
       ],
     );
