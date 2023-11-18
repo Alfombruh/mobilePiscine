@@ -1,5 +1,5 @@
 name: calculator_proj
-description: My first working calculator in flutter
+description: 42 Mobile piscine module00 last exercise.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -11,8 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: # This gets the latest version
+  provider: ^6.0.0
   math_expressions: ^2.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

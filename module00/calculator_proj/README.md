@@ -1,16 +1,3 @@
 # calculator_proj
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project uses [this guide](https://syntax007.hashnode.dev/a-step-by-step-guide-to-creating-a-basic-calculator-app-in-flutter#heading-step-1-create-a-new-flutter-project) to parse calculation and to calculate the result using the ["math_expressions"](https://pub.dev/packages/math_expressions) dart library
