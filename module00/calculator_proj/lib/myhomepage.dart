@@ -87,54 +87,55 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.all(10),
-              color: Theme.of(context).colorScheme.background,
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CalcButton("7", buttonAction),
-                        CalcButton("8", buttonAction),
-                        CalcButton("9", buttonAction),
-                        CalcButton("AC", buttonAction),
-                        CalcButton("C", buttonAction),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CalcButton("4", buttonAction),
-                        CalcButton("5", buttonAction),
-                        CalcButton("6", buttonAction),
-                        CalcButton("÷", buttonAction),
-                        CalcButton("x", buttonAction),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CalcButton("1", buttonAction),
-                        CalcButton("2", buttonAction),
-                        CalcButton("3", buttonAction),
-                        CalcButton("-", buttonAction),
-                        CalcButton("+", buttonAction),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CalcButton("0", buttonAction),
-                        CalcButton(".", buttonAction),
-                        CalcButton("00", buttonAction),
-                        CalcButton("=", buttonAction),
-                        CalcButton("", buttonAction),
-                      ],
-                    ),
-                  ],
-                ),
-              ))
+            padding: const EdgeInsets.all(10),
+            color: Theme.of(context).colorScheme.background,
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CalcButton("7", buttonAction),
+                      CalcButton("8", buttonAction),
+                      CalcButton("9", buttonAction),
+                      CalcButton("AC", buttonAction),
+                      CalcButton("C", buttonAction),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CalcButton("4", buttonAction),
+                      CalcButton("5", buttonAction),
+                      CalcButton("6", buttonAction),
+                      CalcButton("÷", buttonAction),
+                      CalcButton("x", buttonAction),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CalcButton("1", buttonAction),
+                      CalcButton("2", buttonAction),
+                      CalcButton("3", buttonAction),
+                      CalcButton("-", buttonAction),
+                      CalcButton("+", buttonAction),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CalcButton("0", buttonAction),
+                      CalcButton(".", buttonAction),
+                      CalcButton("00", buttonAction),
+                      CalcButton("=", buttonAction),
+                      CalcButton("", buttonAction),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
