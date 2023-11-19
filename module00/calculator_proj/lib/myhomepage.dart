@@ -35,6 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ContextModel cm = ContextModel();
 
           result = '${exp.evaluate(EvaluationType.REAL, cm)}';
+          if (result == "Infinity") {
+            result = "Error";
+          }
           debugPrint("Result is ==> $result");
         } catch (e) {
           result = "Syntax Error";
