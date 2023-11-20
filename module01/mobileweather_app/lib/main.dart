@@ -37,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String location = "";
   String label = "Today";
-  double searchBarRadius = 30;
+  double searchBarRadius = 25;
 
   void bottomBarChange(String value) {
     setState(() {
@@ -48,49 +48,43 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const TextField(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(searchBarRadius),
-                bottomRight: Radius.circular(searchBarRadius),
-                topLeft: Radius.circular(searchBarRadius),
-                topRight: Radius.circular(searchBarRadius)),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            // title: const TextField(),
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.only(
+            //       bottomLeft: Radius.circular(searchBarRadius),
+            //       bottomRight: Radius.circular(searchBarRadius),
+            //       topLeft: Radius.circular(searchBarRadius),
+            //       topRight: Radius.circular(searchBarRadius)),
+            // ),
+            backgroundColor: const Color(0xff19C3FB),
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () => {
+                showSearch(
+                  context: context,
+                  delegate: AppBarSearchDelegate(),
+                )
+              },
+              icon: const Icon(Icons.location_on),
+            ),
           ),
-          backgroundColor: const Color(0xff19C3FB),
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () => {
-              showSearch(
-                context: context,
-                delegate: AppBarSearchDelegate(),
-              )
-            },
-            icon: const Icon(Icons.location_on),
-          ),
-        ),
-        body: Center(
-          child: Text(label),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () => bottomBarChange("Today"),
-                child: const Text("Today"),
+          body: const TabBarView(children: [Text("Today"), Text("Tomorrow"), Text("Weekly")],),
+          bottomNavigationBar:  const BottomAppBar(
+            child: SafeArea(
+              child: TabBar(
+                tabs: [
+                  Tab(text: "Today"),
+                  Tab(text: "Tomorrow"),
+                  Tab(text: "Weekly"),
+                ],
               ),
-              TextButton(
-                onPressed: () => bottomBarChange("Tomorrow"),
-                child: const Text("Tomorrow"),
-              ),
-              TextButton(
-                onPressed: () => bottomBarChange("Weekly"),
-                child: const Text("Weekly"),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -100,14 +94,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class AppBarSearchDelegate extends SearchDelegate {
   @override
-  Widget? buildLeading(BuildContext context) {
-    return const Text("Fognite");
-  }
+  Widget? buildLeading(BuildContext context) => IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new),
+        onPressed: () => close(context, null),
+      );
 
   @override
-  List<Widget>? buildActions(BuildContext context) {
-    return const [Text("Fognite"),];
-  }
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+            onPressed: () {
+              if (query.isEmpty) {
+                close(context, null);
+                return;
+              }
+              query = '';
+            },
+            icon: const Icon(Icons.clear_sharp))
+      ];
 
   @override
   Widget buildResults(BuildContext context) {
