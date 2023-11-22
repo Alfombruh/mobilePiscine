@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   delegate: AppBarSearchDelegate(),
                 )
               },
-              icon: const Icon(Icons.location_on),
+              icon: const Icon(Icons.search),
             ),
           ),
           body: const TabBarView(children: [Text("Today"), Text("Tomorrow"), Text("Weekly")],),
