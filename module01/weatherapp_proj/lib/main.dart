@@ -35,16 +35,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var myController = TextEditingController();
   String location = "";
-  String label = "Today";
   double searchBarRadius = 25;
-
-  void bottomBarChange(String value) {
-    setState(() {
-      location = value;
-      label = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: const TextField(
-              decoration: InputDecoration(
+            title: TextField(
+              controller: myController,
+              onChanged: (text) => setState(() {
+                location = text;
+              }),
+              decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Your location',
               ),
@@ -70,24 +67,47 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: const Color(0xff19C3FB),
             centerTitle: true,
             leading: IconButton(
-              onPressed: () => {debugPrint("Geolocation button")},
-              icon: const Icon(Icons.location_on_sharp),
+              onPressed: () => setState(() {
+                if (location.contains("Geolocation")) {
+                  location = "";
+                } else {
+                  myController.text = "";
+                  location = "Geolocation";
+                }
+              }),
+              icon: !location.contains("Geolocation")
+                  ? const Icon(Icons.location_off_outlined)
+                  : const Icon(Icons.location_on_sharp),
             ),
           ),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              Center(child: Text("Today")),
-              Center(child: Text("Tomorrow")),
-              Center(child: Text("Weekly"))
+              Center(
+                child: Text("Today\n$location",
+                    style: const TextStyle(fontSize: 24)),
+              ),
+              Center(
+                child: Text("Tomorrow\n$location",
+                    style: const TextStyle(fontSize: 24)),
+              ),
+              Center(
+                child: Text("Weekly\n$location",
+                    style: const TextStyle(fontSize: 24)),
+              )
             ],
           ),
           bottomNavigationBar: const BottomAppBar(
             child: SafeArea(
               child: TabBar(
                 tabs: [
-                  Tab(text: "Today"),
-                  Tab(text: "Tomorrow"),
-                  Tab(text: "Weekly"),
+                  Tab(text: "Currently", icon: Icon(Icons.wallpaper_outlined)),
+                  Tab(
+                    text: "Today",
+                    icon: Icon(Icons.today_outlined),
+                  ),
+                  Tab(
+                      text: "Weekly",
+                      icon: Icon(Icons.calendar_month_outlined)),
                 ],
               ),
             ),
