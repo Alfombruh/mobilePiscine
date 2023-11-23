@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -36,7 +35,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var myController = TextEditingController();
+  final myController = TextEditingController();
+  final myPageController = PageController(initialPage: 1);
+  int selectedIndex = 0;
   String location = "";
   double searchBarRadius = 25;
 
@@ -47,73 +48,89 @@ class _MyHomePageState extends State<MyHomePage> {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
-            title: TextField(
-              controller: myController,
-              onChanged: (text) => setState(() {
-                location = text;
+            appBar: AppBar(
+              title: TextField(
+                controller: myController,
+                onChanged: (text) => setState(() {
+                  location = text;
+                }),
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Your location',
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(searchBarRadius),
+                    bottomRight: Radius.circular(searchBarRadius),
+                    topLeft: Radius.circular(searchBarRadius),
+                    topRight: Radius.circular(searchBarRadius)),
+              ),
+              backgroundColor: const Color(0xff19C3FB),
+              centerTitle: true,
+              leading: IconButton(
+                onPressed: () => setState(() {
+                  if (location.contains("Geolocation")) {
+                    location = "";
+                  } else {
+                    myController.text = "";
+                    location = "Geolocation";
+                  }
+                }),
+                icon: !location.contains("Geolocation")
+                    ? const Icon(Icons.location_off_outlined)
+                    : const Icon(Icons.location_on_sharp),
+              ),
+            ),
+            body: PageView(
+              physics: const BouncingScrollPhysics(),
+              controller: myPageController,
+              onPageChanged: (page) => setState(() {
+                selectedIndex = page;
               }),
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Your location',
-              ),
+              children: [
+                Center(
+                  child: Text("Current\n$location",
+                      style: const TextStyle(fontSize: 24)),
+                ),
+                Center(
+                  child: Text("Tomorrow\n$location",
+                      style: const TextStyle(fontSize: 24)),
+                ),
+                Center(
+                  child: Text("Weekly\n$location",
+                      style: const TextStyle(fontSize: 24)),
+                )
+              ],
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(searchBarRadius),
-                  bottomRight: Radius.circular(searchBarRadius),
-                  topLeft: Radius.circular(searchBarRadius),
-                  topRight: Radius.circular(searchBarRadius)),
-            ),
-            backgroundColor: const Color(0xff19C3FB),
-            centerTitle: true,
-            leading: IconButton(
-              onPressed: () => setState(() {
-                if (location.contains("Geolocation")) {
-                  location = "";
-                } else {
-                  myController.text = "";
-                  location = "Geolocation";
-                }
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: selectedIndex,
+              onTap: (value) => setState(() {
+                selectedIndex = value;
+                myPageController.animateToPage(
+                  value,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
               }),
-              icon: !location.contains("Geolocation")
-                  ? const Icon(Icons.location_off_outlined)
-                  : const Icon(Icons.location_on_sharp),
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              Center(
-                child: Text("Today\n$location",
-                    style: const TextStyle(fontSize: 24)),
-              ),
-              Center(
-                child: Text("Tomorrow\n$location",
-                    style: const TextStyle(fontSize: 24)),
-              ),
-              Center(
-                child: Text("Weekly\n$location",
-                    style: const TextStyle(fontSize: 24)),
-              )
-            ],
-          ),
-          bottomNavigationBar: const BottomAppBar(
-            child: SafeArea(
-              child: TabBar(
-                tabs: [
-                  Tab(text: "Currently", icon: Icon(Icons.wallpaper_outlined)),
-                  Tab(
-                    text: "Today",
-                    icon: Icon(Icons.today_outlined),
-                  ),
-                  Tab(
-                      text: "Weekly",
-                      icon: Icon(Icons.calendar_month_outlined)),
-                ],
-              ),
-            ),
-          ),
-        ),
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.timer_outlined),
+                  activeIcon: Icon(Icons.timer),
+                  label: "Current",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.today_outlined),
+                  activeIcon: Icon(Icons.today),
+                  label: "Tomorrow",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_month_outlined),
+                  activeIcon: Icon(Icons.calendar_month),
+                  label: "Weekly",
+                ),
+              ],
+            )),
       ),
     );
   }
