@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
-          primary: Color(0xff1D71F2),
-          secondary: Color(0xffFFCD00),
-          background: Color(0xffE3F4FE),
+          primary: const Color(0xff1D71F2),
+          secondary: const Color(0xffFFCD00),
+          background: const Color(0xffE3F4FE),
         ),
         useMaterial3: true,
       ),
@@ -54,28 +54,34 @@ class _MyHomePageState extends State<MyHomePage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            // title: const TextField(),
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.only(
-            //       bottomLeft: Radius.circular(searchBarRadius),
-            //       bottomRight: Radius.circular(searchBarRadius),
-            //       topLeft: Radius.circular(searchBarRadius),
-            //       topRight: Radius.circular(searchBarRadius)),
-            // ),
+            title: const TextField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Your location',
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(searchBarRadius),
+                  bottomRight: Radius.circular(searchBarRadius),
+                  topLeft: Radius.circular(searchBarRadius),
+                  topRight: Radius.circular(searchBarRadius)),
+            ),
             backgroundColor: const Color(0xff19C3FB),
             centerTitle: true,
             leading: IconButton(
-              onPressed: () => {
-                showSearch(
-                  context: context,
-                  delegate: AppBarSearchDelegate(),
-                )
-              },
-              icon: const Icon(Icons.search),
+              onPressed: () => {debugPrint("Geolocation button")},
+              icon: const Icon(Icons.location_on_sharp),
             ),
           ),
-          body: const TabBarView(children: [Text("Today"), Text("Tomorrow"), Text("Weekly")],),
-          bottomNavigationBar:  const BottomAppBar(
+          body: const TabBarView(
+            children: [
+              Center(child: Text("Today")),
+              Center(child: Text("Tomorrow")),
+              Center(child: Text("Weekly"))
+            ],
+          ),
+          bottomNavigationBar: const BottomAppBar(
             child: SafeArea(
               child: TabBar(
                 tabs: [
@@ -89,36 +95,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
-  }
-}
-
-class AppBarSearchDelegate extends SearchDelegate {
-  @override
-  Widget? buildLeading(BuildContext context) => IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new),
-        onPressed: () => close(context, null),
-      );
-
-  @override
-  List<Widget>? buildActions(BuildContext context) => [
-        IconButton(
-            onPressed: () {
-              if (query.isEmpty) {
-                close(context, null);
-                return;
-              }
-              query = '';
-            },
-            icon: const Icon(Icons.clear_sharp))
-      ];
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return const Text("Fognite");
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return const Text("Fognite");
   }
 }
