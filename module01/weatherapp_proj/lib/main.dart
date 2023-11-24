@@ -36,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final myController = TextEditingController();
-  final myPageController = PageController(initialPage: 1);
+  final myPageController = PageController(initialPage: 0);
   int selectedIndex = 0;
   String location = "";
   double searchBarRadius = 25;
