@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   getCurrentPosition() async {
     var geolocation = await GeolocationService().determinePosition();
     setState(() {
-      location = "$geolocation.coordinates";
+      location = "Lat: ${geolocation.latitude}\nLong: ${geolocation.longitude}";
     });
   }
 
