@@ -61,6 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
               title: TextField(
                 controller: myController,
                 onChanged: (text) => setState(() {
+                  if (locationToggle == true) {
+                    locationToggle = false;
+                  }
                   location = text;
                 }),
                 decoration: const InputDecoration(
@@ -80,10 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: IconButton(
                 onPressed: () {
                   setState(() {
-                    locationToggle = locationToggle == true? false: true;
-                    debugPrint("$locationToggle");
-                    if (locationToggle = true) {
-                      location = "Gelocation";
+                    locationToggle = !locationToggle;
+                    if (locationToggle == true) {
+                      getCurrentPosition();
                     } else {
                       location = "";
                     }
