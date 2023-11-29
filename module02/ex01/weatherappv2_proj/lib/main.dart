@@ -3,7 +3,7 @@ import 'package:weatherappv2_proj/cubit/location_cubit.dart';
 import 'package:weatherappv2_proj/views/currently_view.dart';
 import 'package:weatherappv2_proj/views/tomorrow_view.dart';
 import 'package:weatherappv2_proj/views/weekly_view.dart';
-import 'srcs/geolocationservice.dart';
+import 'services/geolocationservice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
@@ -51,105 +51,88 @@ class _MyHomePageState extends State<MyHomePage> {
   String location = "";
   double searchBarRadius = 25;
 
-  getCurrentPosition() async {
-    var geolocation = await GeolocationService().determinePosition();
-    setState(() {
-      location = "Lat: ${geolocation.latitude}\nLong: ${geolocation.longitude}";
-    });
-  }
-
+  //To-do mover la parte de abajo a un cubit
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LocationCubit, LocationState>(
-      builder: (context, state) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: DefaultTabController(
-            length: 3,
-            child: Scaffold(
-                appBar: AppBar(
-                  title: TextField(
-                    controller: myController,
-                    onChanged: (text) => setState(() {
-                      if (locationToggle == true) {
-                        locationToggle = false;
-                      }
-                      location = text;
-                    }),
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Your location',
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(searchBarRadius),
-                        bottomRight: Radius.circular(searchBarRadius),
-                        topLeft: Radius.circular(searchBarRadius),
-                        topRight: Radius.circular(searchBarRadius)),
-                  ),
-                  backgroundColor: const Color(0xff19C3FB),
-                  centerTitle: true,
-                  leading: IconButton(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+            appBar: AppBar(
+              title: TextField(
+                controller: myController,
+                onChanged: (text) => 
+                  context.read<LocationCubit>().searchLocation(text),
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Your location',
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(searchBarRadius),
+                    bottomRight: Radius.circular(searchBarRadius),
+                    topLeft: Radius.circular(searchBarRadius),
+                    topRight: Radius.circular(searchBarRadius)),
+              ),
+              backgroundColor: const Color(0xff19C3FB),
+              centerTitle: true,
+              leading: BlocBuilder<LocationCubit, LocationState>(
+                builder: (context, state) {
+                  return IconButton(
                     onPressed: () {
-                      setState(() {
-                        locationToggle = !locationToggle;
-                        if (locationToggle == true) {
-                          getCurrentPosition();
-                        } else {
-                          location = "";
-                        }
-                        myController.text = "";
-                      });
+                      context.read<LocationCubit>().geolocation();
+                      myController.text = "";
                     },
-                    icon: !locationToggle
+                    icon: !state.locationToggle
                         ? const Icon(Icons.location_off_outlined)
                         : const Icon(Icons.location_on_sharp),
-                  ),
+                  );
+                },
+              ),
+            ),
+            body: PageView(
+              physics: const BouncingScrollPhysics(),
+              controller: myPageController,
+              onPageChanged: (page) => setState(() {
+                selectedIndex = page;
+              }),
+              children: const [
+                CurrentlyView(),
+                TomorrowView(),
+                WeeklyView(),
+              ],
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: selectedIndex,
+              onTap: (value) => setState(() {
+                selectedIndex = value;
+                myPageController.animateToPage(
+                  value,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              }),
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.timer_outlined),
+                  activeIcon: Icon(Icons.timer),
+                  label: "Current",
                 ),
-                body: PageView(
-                  physics: const BouncingScrollPhysics(),
-                  controller: myPageController,
-                  onPageChanged: (page) => setState(() {
-                    selectedIndex = page;
-                  }),
-                  children: [
-                    CurrentlyView(location: location),
-                    TomorrowView(location: location),
-                    WeeklyView(location: location),
-                  ],
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.today_outlined),
+                  activeIcon: Icon(Icons.today),
+                  label: "Tomorrow",
                 ),
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: selectedIndex,
-                  onTap: (value) => setState(() {
-                    selectedIndex = value;
-                    myPageController.animateToPage(
-                      value,
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeInOut,
-                    );
-                  }),
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.timer_outlined),
-                      activeIcon: Icon(Icons.timer),
-                      label: "Current",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.today_outlined),
-                      activeIcon: Icon(Icons.today),
-                      label: "Tomorrow",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.calendar_month_outlined),
-                      activeIcon: Icon(Icons.calendar_month),
-                      label: "Weekly",
-                    ),
-                  ],
-                )),
-          ),
-        );
-      },
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_month_outlined),
+                  activeIcon: Icon(Icons.calendar_month),
+                  label: "Weekly",
+                ),
+              ],
+            )),
+      ),
     );
   }
 }
