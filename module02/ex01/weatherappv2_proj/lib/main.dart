@@ -61,9 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
             appBar: AppBar(
               title: TextField(
-                controller: myController,
-                onChanged: (text) => 
-                  context.read<LocationCubit>().searchLocation(text),
+                controller: context.read<LocationCubit>().myController,
+                onChanged: (text) =>
+                    context.read<LocationCubit>().searchLocation(text),
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Your location',
@@ -83,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   return IconButton(
                     onPressed: () {
                       context.read<LocationCubit>().geolocation();
-                      myController.text = "";
                     },
                     icon: !state.locationToggle
                         ? const Icon(Icons.location_off_outlined)
