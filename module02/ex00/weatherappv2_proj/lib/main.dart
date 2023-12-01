@@ -1,5 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'srcs/geolocationservice.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:weatherappv2_proj/cubit/location_cubit.dart';
+import 'package:weatherappv2_proj/cubit/navigation_index_cubit.dart';
+import 'package:weatherappv2_proj/views/currently_view.dart';
+import 'package:weatherappv2_proj/views/tomorrow_view.dart';
+import 'package:weatherappv2_proj/views/weekly_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,33 +29,28 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Weather App'),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LocationCubit(),
+          ),
+          BlocProvider(
+            create: (context) => NavigationIndexCubit(),
+          ),
+        ],
+        child: MyHomePage(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+class MyHomePage extends StatelessWidget {
+  MyHomePage({super.key});
 
-class _MyHomePageState extends State<MyHomePage> {
   final myController = TextEditingController();
   final myPageController = PageController(initialPage: 0);
-  int selectedIndex = 0;
-  bool locationToggle = false;
-  String location = "";
-  double searchBarRadius = 25;
-
-  getCurrentPosition() async {
-    var geolocation = await GeolocationService().determinePosition();
-    setState(() {
-      location = "Lat: ${geolocation.latitude}\nLong: ${geolocation.longitude}";
-    });
-  }
+  final double searchBarRadius = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
             appBar: AppBar(
               title: TextField(
-                controller: myController,
-                onChanged: (text) => setState(() {
-                  if (locationToggle == true) {
-                    locationToggle = false;
-                  }
-                  location = text;
-                }),
+                controller: context.read<LocationCubit>().myController,
+                onChanged: (text) =>
+                    context.read<LocationCubit>().searchLocation(text),
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Your location',
@@ -80,71 +78,60 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               backgroundColor: const Color(0xff19C3FB),
               centerTitle: true,
-              leading: IconButton(
-                onPressed: () {
-                  setState(() {
-                    locationToggle = !locationToggle;
-                    if (locationToggle == true) {
-                      getCurrentPosition();
-                    } else {
-                      location = "";
-                    }
-                    myController.text = "";
-                  });
+              leading: BlocBuilder<LocationCubit, LocationState>(
+                builder: (context, state) {
+                  return IconButton(
+                    onPressed: () {
+                      context.read<LocationCubit>().geolocation();
+                    },
+                    icon: !state.locationToggle
+                        ? const Icon(Icons.location_off_outlined)
+                        : const Icon(Icons.location_on_sharp),
+                  );
                 },
-                icon: !locationToggle
-                    ? const Icon(Icons.location_off_outlined)
-                    : const Icon(Icons.location_on_sharp),
               ),
             ),
             body: PageView(
               physics: const BouncingScrollPhysics(),
               controller: myPageController,
-              onPageChanged: (page) => setState(() {
-                selectedIndex = page;
-              }),
-              children: [
-                Center(
-                  child: Text("Current\n$location",
-                      style: const TextStyle(fontSize: 24)),
-                ),
-                Center(
-                  child: Text("Tomorrow\n$location",
-                      style: const TextStyle(fontSize: 24)),
-                ),
-                Center(
-                  child: Text("Weekly\n$location",
-                      style: const TextStyle(fontSize: 24)),
-                )
+              onPageChanged: (page) => context.read<NavigationIndexCubit>().state,
+              children: const [
+                CurrentlyView(),
+                TomorrowView(),
+                WeeklyView(),
               ],
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: selectedIndex,
-              onTap: (value) => setState(() {
-                selectedIndex = value;
-                myPageController.animateToPage(
-                  value,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut,
+            bottomNavigationBar: BlocBuilder<NavigationIndexCubit, int>(
+              builder: (context, state) {
+                return BottomNavigationBar(
+                  currentIndex: context.read<NavigationIndexCubit>().state,
+                  onTap: (value) {
+                    context.read<NavigationIndexCubit>().changeIndex(value);
+                    myPageController.animateToPage(
+                      value,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.timer_outlined),
+                      activeIcon: Icon(Icons.timer),
+                      label: "Current",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.today_outlined),
+                      activeIcon: Icon(Icons.today),
+                      label: "Tomorrow",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.calendar_month_outlined),
+                      activeIcon: Icon(Icons.calendar_month),
+                      label: "Weekly",
+                    ),
+                  ],
                 );
-              }),
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.timer_outlined),
-                  activeIcon: Icon(Icons.timer),
-                  label: "Current",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.today_outlined),
-                  activeIcon: Icon(Icons.today),
-                  label: "Tomorrow",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_month_outlined),
-                  activeIcon: Icon(Icons.calendar_month),
-                  label: "Weekly",
-                ),
-              ],
+              },
             )),
       ),
     );

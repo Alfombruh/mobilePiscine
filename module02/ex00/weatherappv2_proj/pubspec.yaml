@@ -1,5 +1,5 @@
 name: weatherappv2_proj
-description: weatherapp wip proj
+description: weatherapp proj using bloc
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -9,10 +9,13 @@ environment:
   sdk: ^3.1.1
 
 dependencies:
+  bloc: ^8.1.2
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.3
   geolocator: ^10.1.0
-  math_expressions: ^2.4.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
