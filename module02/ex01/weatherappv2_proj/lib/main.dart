@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weatherappv2_proj/cubit/location_cubit.dart';
+import 'package:weatherappv2_proj/cubit/navigation_index_cubit.dart';
 import 'package:weatherappv2_proj/views/currently_view.dart';
 import 'package:weatherappv2_proj/views/tomorrow_view.dart';
 import 'package:weatherappv2_proj/views/weekly_view.dart';
-import 'services/geolocationservice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
@@ -27,8 +27,15 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: BlocProvider(
-        create: (context) => LocationCubit(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LocationCubit(),
+          ),
+          BlocProvider(
+            create: (context) => NavigationIndexCubit(),
+          ),
+        ],
         child: MyHomePage(title: 'Weather App'),
       ),
     );
@@ -46,9 +53,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final myController = TextEditingController();
   final myPageController = PageController(initialPage: 0);
-  int selectedIndex = 0;
-  bool locationToggle = false;
-  String location = "";
   double searchBarRadius = 25;
 
   //To-do mover la parte de abajo a un cubit
@@ -94,42 +98,44 @@ class _MyHomePageState extends State<MyHomePage> {
             body: PageView(
               physics: const BouncingScrollPhysics(),
               controller: myPageController,
-              onPageChanged: (page) => setState(() {
-                selectedIndex = page;
-              }),
+              onPageChanged: (page) => context.read<NavigationIndexCubit>().state,
               children: const [
                 CurrentlyView(),
                 TomorrowView(),
                 WeeklyView(),
               ],
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: selectedIndex,
-              onTap: (value) => setState(() {
-                selectedIndex = value;
-                myPageController.animateToPage(
-                  value,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut,
+            bottomNavigationBar: BlocBuilder<NavigationIndexCubit, int>(
+              builder: (context, state) {
+                return BottomNavigationBar(
+                  currentIndex: context.read<NavigationIndexCubit>().state,
+                  onTap: (value) {
+                    context.read<NavigationIndexCubit>().changeIndex(value);
+                    myPageController.animateToPage(
+                      value,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.timer_outlined),
+                      activeIcon: Icon(Icons.timer),
+                      label: "Current",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.today_outlined),
+                      activeIcon: Icon(Icons.today),
+                      label: "Tomorrow",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.calendar_month_outlined),
+                      activeIcon: Icon(Icons.calendar_month),
+                      label: "Weekly",
+                    ),
+                  ],
                 );
-              }),
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.timer_outlined),
-                  activeIcon: Icon(Icons.timer),
-                  label: "Current",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.today_outlined),
-                  activeIcon: Icon(Icons.today),
-                  label: "Tomorrow",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_month_outlined),
-                  activeIcon: Icon(Icons.calendar_month),
-                  label: "Weekly",
-                ),
-              ],
+              },
             )),
       ),
     );
