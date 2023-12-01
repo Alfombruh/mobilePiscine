@@ -25,7 +25,11 @@ class LocationCubit extends Cubit<LocationState> {
       emit(LocationState(location: text, locationToggle: false));
 
   Future<String> _getCurrentPosition() async {
-    var geolocation = await GeolocationService().determinePosition();
-    return "Lat: ${geolocation.latitude}\nLong: ${geolocation.longitude}";
+    try {
+      var geolocation = await GeolocationService().determinePosition();
+      return "Lat: ${geolocation.latitude}\nLong: ${geolocation.longitude}";
+    } catch (error) {
+      return "Couldn't get Location";
+    }
   }
 }
