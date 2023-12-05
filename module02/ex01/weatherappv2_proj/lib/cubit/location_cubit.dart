@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherappv2_proj/provider/geolocation.dart';
 import 'package:weatherappv2_proj/repositories/geolocation.dart';
 import 'package:weatherappv2_proj/services/geolocationservice.dart';
 
