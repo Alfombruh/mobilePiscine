@@ -7,6 +7,8 @@ import 'package:weatherappv2_proj/cubit/navigation_index_cubit.dart';
 import 'package:weatherappv2_proj/views/currently_view.dart';
 import 'package:weatherappv2_proj/views/tomorrow_view.dart';
 import 'package:weatherappv2_proj/views/weekly_view.dart';
+import 'package:weatherappv2_proj/widgets/myappbar.dart';
+import 'package:weatherappv2_proj/widgets/mybottomnavigationbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +51,6 @@ class MyHomePage extends StatelessWidget {
 
   final myController = TextEditingController();
   final myPageController = PageController(initialPage: 0);
-  final double searchBarRadius = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -58,47 +59,7 @@ class MyHomePage extends StatelessWidget {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-            appBar: AppBar(
-              title: Autocomplete<String>(
-                optionsBuilder: (textEditingValue) {
-                  return "Hola" as Iterable<String>;
-                  //context.read<
-                  //returns an iterable of matches
-                  //return data.filter(entry)=>entry.contains(textEditingValue.text);
-                },
-              ),
-              // title: TextField(
-              //   enableSuggestions: true,
-              //   controller: context.read<LocationCubit>().myController,
-              //   onChanged: (text) =>
-              //       context.read<LocationCubit>().searchLocation(text),
-              //   decoration: const InputDecoration(
-              //     border: UnderlineInputBorder(),
-              //     labelText: 'Your location',
-              //   ),
-              // ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(searchBarRadius),
-                    bottomRight: Radius.circular(searchBarRadius),
-                    topLeft: Radius.circular(searchBarRadius),
-                    topRight: Radius.circular(searchBarRadius)),
-              ),
-              backgroundColor: const Color(0xff19C3FB),
-              centerTitle: true,
-              leading: BlocBuilder<LocationCubit, LocationState>(
-                builder: (context, state) {
-                  return IconButton(
-                    onPressed: () {
-                      context.read<LocationCubit>().geolocation();
-                    },
-                    icon: !state.locationToggle
-                        ? const Icon(Icons.location_off_outlined)
-                        : const Icon(Icons.location_on_sharp),
-                  );
-                },
-              ),
-            ),
+            appBar: const MyAppBar(),
             body: PageView(
               physics: const BouncingScrollPhysics(),
               controller: myPageController,
@@ -110,41 +71,11 @@ class MyHomePage extends StatelessWidget {
                 WeeklyView(),
               ],
             ),
-            bottomNavigationBar: BlocBuilder<NavigationIndexCubit, int>(
-              builder: (context, state) {
-                return BottomNavigationBar(
-                  currentIndex: context.read<NavigationIndexCubit>().state,
-                  onTap: (value) {
-                    context.read<NavigationIndexCubit>().changeIndex(value);
-                    myPageController.animateToPage(
-                      value,
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  fixedColor: const Color(0xff19C3FB),
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.timer_outlined),
-                      activeIcon: Icon(Icons.timer, color: Color(0xff19C3FB)),
-                      label: "Current",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.today_outlined),
-                      activeIcon: Icon(Icons.today, color: Color(0xff19C3FB)),
-                      label: "Tomorrow",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.calendar_month_outlined),
-                      activeIcon:
-                          Icon(Icons.calendar_month, color: Color(0xff19C3FB)),
-                      label: "Weekly",
-                    ),
-                  ],
-                );
-              },
-            )),
+            bottomNavigationBar: MyBottomNavigationBar(myPageController: myPageController)),
       ),
     );
   }
 }
+
+
+
