@@ -61,6 +61,7 @@ class MyHomePage extends StatelessWidget {
         child: Scaffold(
             appBar: AppBar(
               title: TextField(
+                enableSuggestions: true,
                 controller: context.read<LocationCubit>().myController,
                 onChanged: (text) =>
                     context.read<LocationCubit>().searchLocation(text),
