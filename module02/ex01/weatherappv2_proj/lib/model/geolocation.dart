@@ -12,10 +12,10 @@ class GeoLocation {
   
     factory GeoLocation.fromJson(Map<String, dynamic> json) {
       return GeoLocation(
-        latitude: json['data:latitude'] as String,
-        longitude: json['data:longitude'] as String,
-        city: json['data:city'] as String,
-        country: json['data:country'] as String,
+        latitude: json['latitude'] as String,
+        longitude: json['longitude'] as String,
+        city: json['city'] as String,
+        country: json['country'] as String,
       );
     }
     
