@@ -10,10 +10,11 @@ class CurrentlyView extends StatelessWidget {
     return BlocBuilder<LocationCubit, LocationState>(
       builder: (context, state) {
         return Center(
-            child: Text(
-          "Current\n${state.location}",
-          style: const TextStyle(fontSize: 24),
-        ));
+          child: Text(
+            "Current\n${state.location}",
+            style: const TextStyle(fontSize: 24),
+          ),
+        );
       },
     );
   }

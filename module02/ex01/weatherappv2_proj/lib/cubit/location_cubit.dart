@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:weatherappv2_proj/provider/geolocation.dart';
+import 'package:weatherappv2_proj/repositories/geolocation.dart';
 import 'package:weatherappv2_proj/services/geolocationservice.dart';
 
 part 'location_state.dart';
@@ -26,9 +28,11 @@ class LocationCubit extends Cubit<LocationState> {
 
   Future<String> _getCurrentPosition() async {
     try {
-      var geolocation = await GeolocationService().determinePosition();
-      return "Lat: ${geolocation.latitude}\nLong: ${geolocation.longitude}";
+      var coordinates = await GeolocationService().determinePosition();
+      var geolocation = await GeolocationRepository().getGeoLocation(coordinates.latitude, coordinates.longitude);
+      return geolocation.city;
     } catch (error) {
+      debugPrint("GeoLocatoin repo error ${error.toString()}");
       return "Couldn't get Location";
     }
   }
