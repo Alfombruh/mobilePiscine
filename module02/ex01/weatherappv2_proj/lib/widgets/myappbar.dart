@@ -7,7 +7,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
   });
 
-  final double searchBarRadius = 25;
+  static const double searchBarRadius = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -47,5 +47,5 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
   
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
