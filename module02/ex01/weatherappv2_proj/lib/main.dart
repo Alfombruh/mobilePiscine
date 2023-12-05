@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
@@ -60,16 +59,24 @@ class MyHomePage extends StatelessWidget {
         length: 3,
         child: Scaffold(
             appBar: AppBar(
-              title: TextField(
-                enableSuggestions: true,
-                controller: context.read<LocationCubit>().myController,
-                onChanged: (text) =>
-                    context.read<LocationCubit>().searchLocation(text),
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Your location',
-                ),
+              title: Autocomplete<String>(
+                optionsBuilder: (textEditingValue) {
+                  return "Hola" as Iterable<String>;
+                  //context.read<
+                  //returns an iterable of matches
+                  //return data.filter(entry)=>entry.contains(textEditingValue.text);
+                },
               ),
+              // title: TextField(
+              //   enableSuggestions: true,
+              //   controller: context.read<LocationCubit>().myController,
+              //   onChanged: (text) =>
+              //       context.read<LocationCubit>().searchLocation(text),
+              //   decoration: const InputDecoration(
+              //     border: UnderlineInputBorder(),
+              //     labelText: 'Your location',
+              //   ),
+              // ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(searchBarRadius),
@@ -95,7 +102,8 @@ class MyHomePage extends StatelessWidget {
             body: PageView(
               physics: const BouncingScrollPhysics(),
               controller: myPageController,
-              onPageChanged: (page) => context.read<NavigationIndexCubit>().state,
+              onPageChanged: (page) =>
+                  context.read<NavigationIndexCubit>().state,
               children: const [
                 CurrentlyView(),
                 TomorrowView(),
@@ -114,20 +122,22 @@ class MyHomePage extends StatelessWidget {
                       curve: Curves.easeInOut,
                     );
                   },
+                  fixedColor: const Color(0xff19C3FB),
                   items: const [
                     BottomNavigationBarItem(
                       icon: Icon(Icons.timer_outlined),
-                      activeIcon: Icon(Icons.timer),
+                      activeIcon: Icon(Icons.timer, color: Color(0xff19C3FB)),
                       label: "Current",
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.today_outlined),
-                      activeIcon: Icon(Icons.today),
+                      activeIcon: Icon(Icons.today, color: Color(0xff19C3FB)),
                       label: "Tomorrow",
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.calendar_month_outlined),
-                      activeIcon: Icon(Icons.calendar_month),
+                      activeIcon:
+                          Icon(Icons.calendar_month, color: Color(0xff19C3FB)),
                       label: "Weekly",
                     ),
                   ],
