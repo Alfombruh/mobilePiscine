@@ -24,4 +24,20 @@ class GeolocationProvider {
       throw ("GeoLocation provider exception");
     }
   }
+
+  Future<Map<String, dynamic>> getGeoLocationList(String str) async {
+    try {
+      var api = "$GEOCODING_API?name=$str&count=5";
+      debugPrint("(api is)=>$api");
+      final res = await http.get(Uri.parse(api));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      }
+      debugPrint("(GeoLocation List Status Code)=> ${res.statusCode}");
+      throw Exception("Failed Fetching Geocode");
+    } catch (error) {
+      debugPrint("(Fetching geocode error)=> $error");
+      throw ("GeoCoding provider exception");
+    }
+  }
 }

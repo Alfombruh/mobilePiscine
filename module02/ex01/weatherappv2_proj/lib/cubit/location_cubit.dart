@@ -22,13 +22,27 @@ class LocationCubit extends Cubit<LocationState> {
     emit(LocationState(location: "", locationToggle: false));
   }
 
+  void geolocationSuggestions(String str) async {
+    if (!state.locationToggle) {
+      final locationList =
+          await GeolocationRepository().getGeoLocationList(str);
+      locationList.length;
+      return;
+    }
+  }
+
+  void getWeather() async {
+    //todo, call api and try to find zone
+  }
+
   void searchLocation(String text) =>
       emit(LocationState(location: text, locationToggle: false));
 
   Future<String> _getCurrentPosition() async {
     try {
       var coordinates = await GeolocationService().determinePosition();
-      var geolocation = await GeolocationRepository().getGeoLocation(coordinates.latitude, coordinates.longitude);
+      var geolocation = await GeolocationRepository()
+          .getGeoLocation(coordinates.latitude, coordinates.longitude);
       return geolocation.city;
     } catch (error) {
       debugPrint("GeoLocatoin repo error ${error.toString()}");

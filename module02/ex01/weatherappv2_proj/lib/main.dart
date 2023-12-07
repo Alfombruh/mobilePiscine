@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
-  final myController = TextEditingController();
   final myPageController = PageController(initialPage: 0);
 
   @override
