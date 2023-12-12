@@ -11,7 +11,7 @@ class GeolocationProvider {
       double latitude, double longitude) async {
     try {
       var api =
-          "$RGEOLOCATION_API_PATH?access_key=$RGEOLOCATION_API_KEY&query=${latitude.toString()},${longitude.toString()}";
+          "$RGEOLOCATION_API_PATH?access_key=$RGEOLOCATION_API_KEY";
       debugPrint(api);
       final res = await http.get(Uri.parse(api));
       if (res.statusCode == 200) {

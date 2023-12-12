@@ -1,12 +1,31 @@
-abstract class Weather {
-  Weather({required this.celsiusTemperature, required this.test});
+import 'dart:ffi';
 
-  final double celsiusTemperature;
-  final double test;
+abstract class Weather {
+  Weather(this.day, 
+      {required this.temperature,
+      required this.weatherDescription,
+      required this.windSpeed});
+
+  final double temperature;
+  final String weatherDescription;
+  final double windSpeed;
+  final UnsignedInt? day;
 }
 
-// class TodayWeather extends Weather {}
+class CurrentWeather {
+  CurrentWeather(this.current);
 
-// class TomorrowWeather extends Weather {}
+  final Weather current;
+}
 
-// class WeeklyWeather extends Weather {}
+class TodayWeather {
+  TodayWeather(this.hours);
+
+  final List<Weather> hours;
+}
+
+class WeeklyWeather {
+  WeeklyWeather(this.days);
+
+  final List<Weather> days;
+}
