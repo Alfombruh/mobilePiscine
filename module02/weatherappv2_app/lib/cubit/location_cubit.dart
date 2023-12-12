@@ -43,7 +43,7 @@ class LocationCubit extends Cubit<LocationState> {
       var coordinates = await GeolocationService().determinePosition();
       var geolocation = await GeolocationRepository()
           .getGeoLocation(coordinates.latitude, coordinates.longitude);
-      return geolocation.city;
+      return geolocation.city!;
     } catch (error) {
       debugPrint("GeoLocatoin repo error ${error.toString()}");
       return "Couldn't get Location";
