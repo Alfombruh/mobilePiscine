@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 abstract class Weather {
-  Weather(this.day, 
+  Weather(this.day,
       {required this.temperature,
       required this.weatherDescription,
       required this.windSpeed});
@@ -19,7 +19,7 @@ class CurrentWeather {
 }
 
 class TodayWeather {
-  TodayWeather(this.hours);
+  TodayWeather({this.hours});
 
   final List<Weather> hours;
 }

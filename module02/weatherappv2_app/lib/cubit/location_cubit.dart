@@ -31,8 +31,14 @@ class LocationCubit extends Cubit<LocationState> {
     }
   }
 
+  //todo, call api and try to find zone
   void getWeather() async {
-    //todo, call api and try to find zone
+    try {
+      //var weather = await WeatherRespository().getWeather();
+      //ya se implementara
+    } catch (error) {
+      debugPrint("Get Weather API Call error is ()=> $error");
+    }
   }
 
   void searchLocation(String text) =>
