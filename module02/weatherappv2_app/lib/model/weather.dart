@@ -19,7 +19,7 @@ class CurrentWeather {
 }
 
 class TodayWeather {
-  TodayWeather({this.hours});
+  TodayWeather(this.hours);
 
   final List<Weather> hours;
 }

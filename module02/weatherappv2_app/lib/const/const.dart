@@ -2,7 +2,7 @@
 
 //API's
 const WEATHER_API_PATH =
-    "https://api.open-meteo.com"; //https://open-meteo.com/en/docs
+    "https://api.open-meteo.com/v1/forecast"; //https://open-meteo.com/en/docs
 
 const RGEOLOCATION_API_PATH =
     "http://api.positionstack.com/v1/reverse"; //https://positionstack.com/documentation
